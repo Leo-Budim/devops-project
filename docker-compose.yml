@@ -1,0 +1,33 @@
+version: '2.20.3'
+services:
+  api:
+    container_name: api
+    build: 
+      context: .
+    ports:
+      - 8000:8000
+    depends_on:
+      - postgres
+    networks:
+      - default-network
+    env_file:
+      - ./app/dotenv_files/.env
+    volumes:
+      - ./app:/app/backend
+
+  postgres:
+    container_name: postgres
+    image: postgres:15.4-alpine
+    env_file:
+      - ./app/dotenv_files/.env
+    networks:
+      - default-network
+    volumes:
+      - db:/var/lib/postgresql/data
+
+volumes:
+  db:
+
+networks:
+  default-network:
+    driver: bridge
